@@ -98,6 +98,9 @@ def main():
     event = json.load(open(os.environ["GITHUB_EVENT_PATH"], encoding="utf-8"))
     token = os.environ["GITHUB_TOKEN"]
     pr, repo = event["pull_request"], event["repository"]["full_name"]
+    if pr["user"]["id"] == event["repository"]["owner"]["id"]:
+        print("signature: maintainer pull request, not a signing PR; nothing to validate")
+        return 0
     version = current_version((HERE / "ICLA.md").read_text(encoding="utf-8"))
     files = api_get(f"/repos/{repo}/pulls/{pr['number']}/files", token)
     existing = {int(r["github_id"]) for r in csv.DictReader(io.StringIO((HERE / CSV_PATH).read_text(encoding="utf-8")))}
