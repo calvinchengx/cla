@@ -1,0 +1,27 @@
+name: Validate signature
+
+# pull_request_target so the validator that runs is main's, not the signer's:
+# a signing PR comes from an outside fork and must not be able to edit the
+# check. Safe because nothing from the PR is checked out or executed. The
+# checkout is of this repository's base branch, and the PR's change is read
+# as data through the API.
+on:
+  pull_request_target: # zizmor: ignore[dangerous-triggers] -- no PR code is checked out or run; see above
+    types: [opened, edited, synchronize, reopened]
+
+permissions: {}
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 validate_signature.py

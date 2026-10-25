@@ -1,0 +1,42 @@
+name: CLA check
+description: Fail a pull request whose authors have not signed the calvinchengx ICLA.
+
+# Use ONLY from a `pull_request_target` workflow, with no checkout of the pull
+# request. `pull_request_target` runs the base branch's copy of the workflow,
+# so a contributor cannot edit the check away in their own PR (a plain
+# `pull_request` trigger would run their copy). This action executes nothing
+# from the PR: it reads PR metadata through the API, read-only.
+#
+#   on:
+#     pull_request_target:
+#       types: [opened, synchronize, reopened]
+#   permissions: {}
+#   jobs:
+#     cla:
+#       runs-on: ubuntu-latest
+#       permissions:
+#         pull-requests: read
+#       steps:
+#         - uses: calvinchengx/cla@<full sha> # v1
+
+inputs:
+  signatures-repo:
+    description: Repository holding signatures/icla.csv on main.
+    default: calvinchengx/cla
+  token:
+    description: Token for the GitHub API. Only needs to read pull requests.
+    default: ${{ github.token }}
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        CLA_SIGNATURES_REPO: ${{ inputs.signatures-repo }}
+      run: |
+        if [ "$GITHUB_EVENT_NAME" != "pull_request_target" ]; then
+          echo "::error::the CLA check must run on pull_request_target (got $GITHUB_EVENT_NAME), or a PR can edit it away"
+          exit 1
+        fi
+        python3 "$GITHUB_ACTION_PATH/cla_check.py"
