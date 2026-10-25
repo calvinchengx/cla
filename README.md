@@ -32,14 +32,18 @@ You sign once, and it covers every project.
    check passes on your pull requests in every project. Re-run it there, or
    push again.
 
-The file is public: it lists your name and GitHub account, never your email.
-Accounts are matched by GitHub's numeric user id, so renaming your account
-doesn't undo your signature.
+The file is public (ICLA §9): it lists your name, GitHub account and, if you
+name one, your employer, never your email. Accounts are matched by GitHub's
+numeric user id, so renaming your account doesn't undo your signature.
 
 If you contribute as part of your job, check with your employer first. In many
 countries, including the UK for civil servants (Crown copyright), your employer
 owns what you write at work, and only they can grant these rights. In that case
-your employer signs the CCLA.
+your employer signs the CCLA first, by emailing it to calvin@calvinx.com. Once
+it is on file, the company is listed in
+[`signatures/ccla.csv`](signatures/ccla.csv), and you sign the ICLA naming it as
+your employer, spelled as it is listed there. Until then, a signing PR that
+names an employer is held.
 
 ## For projects
 

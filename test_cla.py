@@ -64,7 +64,14 @@ class ValidateSignature(unittest.TestCase):
 
     def test_valid_row(self):
         self.assertEqual(self.check("20,bob,Bob Builder,1.0,2026-10-25,"), [])
-        self.assertEqual(self.check("20,Bob,Bob Builder,1.0,2026-10-24,Acme Ltd"), [])
+
+    def test_employer_needs_a_ccla_on_file(self):
+        line = "20,Bob,Bob Builder,1.0,2026-10-24,Acme Ltd"
+        self.assertTrue(any("no CCLA on file" in p for p in self.check(line)))
+        companies = vs.ccla_companies("company,ccla_version,signed_on\nACME LTD,1.0,2026-10-20\n")
+        self.assertEqual(vs.check_row(line, BOB, {10}, "1.0", self.TODAY, self.BODY, companies), [])
+        self.assertTrue(any("no CCLA on file" in p for p in
+                            vs.check_row(line.replace("Acme Ltd", "Acme Inc"), BOB, {10}, "1.0", self.TODAY, self.BODY, companies)))
 
     def test_row_for_someone_else_fails(self):
         problems = self.check("10,alice,Alice A,1.0,2026-10-25,")
