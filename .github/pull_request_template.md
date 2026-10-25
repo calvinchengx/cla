@@ -7,7 +7,8 @@ Line format:
 Example:
   1234567,octocat,Mona Lisa Octocat,1.0,2026-10-25,
 Leave employer empty if you contribute in a personal capacity. Otherwise name
-your employer, who must also have signed the CCLA (see CCLA.md).
+your employer exactly as it appears in signatures/ccla.csv: it must have signed
+the CCLA (see CCLA.md) first. The line is published (ICLA section 9).
 -->
 
 I have read the Individual Contributor License Agreement version 1.0 and I agree to its terms.

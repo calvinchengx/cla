@@ -3,22 +3,28 @@
 **Version 1.0 — DRAFT, not yet in force. To be reviewed by a lawyer before use.**
 
 This agreement is between a company or other organisation (the "Corporation")
-and Calvin Cheng (the "Maintainer"). It lets the Corporation's employees and
-contractors contribute to the Maintainer's Projects when the Corporation owns
-what they create. Each person listed in Schedule A also signs the
+and the Maintainer. It lets the Corporation's employees contribute to the
+Maintainer's Projects when the Corporation owns what they create. Each person
+listed in Schedule A also signs the
 [Individual Contributor License Agreement](ICLA.md).
+
+Contractors are covered only if the Corporation owns what they create for it.
+A contractor who keeps the rights in their own work signs the Individual
+Contributor License Agreement on their own behalf instead.
 
 ## 1. Definitions
 
 The definitions in section 1 of the Individual Contributor License Agreement
-("Project", "Contribution", "Submit") apply here, with these changes:
+("Maintainer", "Project", "Contribution", "Submit") apply here, with these
+changes:
 
 - **"You"** means the Corporation, together with every entity that controls, is
   controlled by, or is under common control with it. "Control" means owning 50%
   or more of the voting securities, or otherwise having the power to direct its
   management.
-- **"Contribution"** means a Contribution Submitted by a person listed in
-  Schedule A while that person is listed.
+- **"Contribution"** means a Contribution, as the Individual Contributor License
+  Agreement defines it, Submitted by a person listed in Schedule A while that
+  person is listed.
 
 ## 2. Licenses
 
@@ -33,9 +39,9 @@ for every Contribution. The Maintainer gives You the same promise (section 3).
   You is authorised to do so.
 - Each person in Schedule A is authorised to Submit Contributions on Your
   behalf.
-- Each Contribution is original to the person who Submitted it, or its third-
-  party parts will be identified when it is Submitted, as the Individual
-  Contributor License Agreement requires.
+- Each Contribution meets section 5 of the Individual Contributor License
+  Agreement, including identifying third-party material and covering any output
+  of a code-generation or AI tool.
 
 ## 4. Schedule A and the CLA Manager
 
@@ -46,7 +52,17 @@ withdraw the licenses for Contributions they already Submitted.
 ## 5. No obligation, no warranty, changes, governing law
 
 Sections 6, 7 and 8 of the Individual Contributor License Agreement apply to You
-as they apply to an individual.
+as they apply to an individual. This agreement is governed by the laws of
+Singapore, and the courts of Singapore have exclusive jurisdiction over any
+dispute arising from it.
+
+## 6. What is published
+
+Your name and the date You signed are published in `signatures/ccla.csv` at
+`github.com/calvinchengx/cla`, so that a contributor who names You as their
+employer can be matched to this agreement. The signed agreement itself, Your
+address, the signatory, the CLA Manager and Schedule A are kept privately by the
+Maintainer, not in that repository.
 
 ---
 
@@ -63,5 +79,7 @@ as they apply to an individual.
 |---|---|---|---|
 | | | | |
 
-**How to sign:** email the completed, signed agreement to the Maintainer. See
-[README.md](README.md). Signed copies are kept privately, not in this repository.
+**How to sign:** email the completed, signed agreement to calvin@calvinx.com.
+Each person in Schedule A then signs the Individual Contributor License
+Agreement as [README.md](README.md) describes, naming the Corporation, exactly
+as it appears in `signatures/ccla.csv`, as their employer.

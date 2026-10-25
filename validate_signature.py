@@ -20,6 +20,7 @@ import urllib.request
 
 HERE = pathlib.Path(__file__).resolve().parent
 CSV_PATH = "signatures/icla.csv"
+CCLA_PATH = "signatures/ccla.csv"
 FIELDS = ["github_id", "github_login", "full_name", "icla_version", "signed_on", "employer"]
 STATEMENT = "I have read the Individual Contributor License Agreement version {v} and I agree to its terms."
 
@@ -45,7 +46,12 @@ def added_line(files):
     return lines[0]
 
 
-def check_row(line, author, existing_ids, version, opened_on, body):
+def ccla_companies(csv_text):
+    """Employers with a CCLA on file, normalised for matching."""
+    return {r["company"].strip().casefold() for r in csv.DictReader(io.StringIO(csv_text)) if r.get("company", "").strip()}
+
+
+def check_row(line, author, existing_ids, version, opened_on, body, companies=frozenset()):
     """Return a list of problems with the new row; empty means it is valid."""
     rows = list(csv.reader(io.StringIO(line)))
     if len(rows) != 1 or len(rows[0]) != len(FIELDS):
@@ -68,6 +74,12 @@ def check_row(line, author, existing_ids, version, opened_on, body):
             problems.append(f"signed_on {signed} should be today ({opened_on}, UTC)")
     except ValueError:
         problems.append(f"signed_on {row['signed_on']!r} is not a YYYY-MM-DD date")
+    # A named employer is held until its CCLA is on file: the maintainer adds
+    # the company to signatures/ccla.csv after receiving the signed agreement.
+    if row["employer"] and row["employer"].casefold() not in companies:
+        problems.append(f"employer {row['employer']!r} has no CCLA on file yet. Your employer must "
+                        f"sign CCLA.md first, and the name must match {CCLA_PATH} exactly. "
+                        "If you contribute in a personal capacity, leave employer empty")
     if STATEMENT.format(v=version) not in (body or ""):
         problems.append("the PR description must contain, word for word: " + STATEMENT.format(v=version))
     return problems
@@ -95,7 +107,8 @@ def main():
         problems = [str(e)]
     else:
         opened_on = datetime.datetime.fromisoformat(pr["created_at"].replace("Z", "+00:00")).date()
-        problems = check_row(line, pr["user"], existing, version, opened_on, pr["body"])
+        companies = ccla_companies((HERE / CCLA_PATH).read_text(encoding="utf-8"))
+        problems = check_row(line, pr["user"], existing, version, opened_on, pr["body"], companies)
     if problems:
         print("signature: not valid yet")
         for p in problems:
